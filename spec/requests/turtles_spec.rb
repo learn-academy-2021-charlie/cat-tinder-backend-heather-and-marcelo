@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Turtles", type: :request do
   describe "GET /index" do
     it "gets a list of turtles" do
-      Turtle.create name: 'Another name', age: 5, enjoys: 'Walks'
+      Turtle.create name: 'Another name', age: 5, enjoys: 'Walks on the beach'
 
       # Make a request
       get '/turtles'
@@ -18,18 +18,18 @@ RSpec.describe "Turtles", type: :request do
     it "creates a new turtle" do
       turtle_params = {
         turtle:  {
-          name: "Michelangelo",
+          name: "Leonardo",
           age: 35,
-          enjoys: "Pizza"
+          enjoys: "Pizza and fighting crime"
         }
       }
 
     post '/turtles', params: turtle_params
     new_turtle = Turtle.first
     expect(response).to have_http_status(200)
-    expect(new_turtle.name).to eq "Michelangelo"
+    expect(new_turtle.name).to eq "Leonardo"
     expect(new_turtle.age).to eq 35
-    expect(new_turtle.enjoys).to eq "Pizza"
+    expect(new_turtle.enjoys).to eq "Pizza and fighting crime"
 
     end
   end
@@ -38,9 +38,9 @@ RSpec.describe "Turtles", type: :request do
     it "update turtle" do
       turtle_params = {
         turtle:  {
-          name: "Michelangelo",
+          name: "Leonardo",
           age: 35,
-          enjoys: "Pizza"
+          enjoys: "Pizza and fighting crime"
         }
       }
 
@@ -50,7 +50,7 @@ RSpec.describe "Turtles", type: :request do
       turtle: {
         name: "Leonardo",
         age: 15,
-        enjoys: "Justice"
+        enjoys: "Justice and killing evil turtles"
       }
     }
 
@@ -64,7 +64,7 @@ RSpec.describe "Turtles", type: :request do
     expect(response).to have_http_status(200)
     expect(updated_turtle.name).to eq "Leonardo"
     expect(updated_turtle.age).to eq 15
-    expect(updated_turtle.enjoys).to eq "Justice"
+    expect(updated_turtle.enjoys).to eq "Justice and killing evil turtles"
 
     end
   end
@@ -73,9 +73,9 @@ RSpec.describe "Turtles", type: :request do
     it "delete turtle" do
       turtle_params = {
         turtle:  {
-          name: "Michelangelo",
+          name: "Leonardo",
           age: 35,
-          enjoys: "Pizza"
+          enjoys: "Pizza and fighting crime"
         }
       }
 
@@ -95,7 +95,7 @@ RSpec.describe "Turtles", type: :request do
       turtle_params = {
         turtle:  {
           age: 35,
-          enjoys: "Pizza"
+          enjoys: "Pizza and fighting crime"
         }
       }
       post '/turtles', params: turtle_params
@@ -109,8 +109,8 @@ RSpec.describe "Turtles", type: :request do
     it 'cannot create a turtle with out an age' do
       turtle_params = {
         turtle:  {
-          name: "Michelangelo",
-          enjoys: "Pizza"
+          name: "Leonardo",
+          enjoys: "Pizza and fighting crime"
         }
       }
       post '/turtles', params: turtle_params
@@ -120,8 +120,14 @@ RSpec.describe "Turtles", type: :request do
       expect(turtle['age']).to include "can't be blank"
 
     end
+    # it { should validate_length_of(:phone_number).is_at_least(7)}
+    it 'enjoys should have at least 10 characters' do
+      turtle = Turtle.create name: 'Raphael', age: 5, enjoys: 'Walks'
+
+      expect(turtle.errors[:enjoys]).to_not be_empty
 
 
+    end
   end
 
 end
