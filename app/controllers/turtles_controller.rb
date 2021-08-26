@@ -10,6 +10,11 @@ class TurtlesController < ApplicationController
         render json: turtle
     end
 
+    def update
+        turtle = Turtle.find(params[:id])
+        turtle.update(turtle_params)
+        render json: turtle
+    end
 
     private
     def turtle_params
