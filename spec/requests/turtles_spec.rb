@@ -69,4 +69,25 @@ RSpec.describe "Turtles", type: :request do
     end
   end
 
+  describe "DELETE /detroy" do
+    it "delete turtle" do
+      turtle_params = {
+        turtle:  {
+          name: "Michelangelo",
+          age: 35,
+          enjoys: "Pizza"
+        }
+      }
+    
+    post '/turtles', params: turtle_params
+    
+    turtle = Turtle.first
+    delete "/turtles/#{turtle.id}"
+
+    expect(response).to have_http_status(200)
+    turtles = Turtle.all
+    expect(turtles).to be_empty
+    end
+  end
+
 end
