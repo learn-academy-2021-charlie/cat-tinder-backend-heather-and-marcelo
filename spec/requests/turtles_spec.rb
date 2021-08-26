@@ -13,4 +13,25 @@ RSpec.describe "Turtles", type: :request do
       expect(turtle.length).to eq 1
     end
   end
+
+  describe "POST /create" do
+    it "creates a new turtle" do
+      turtle_params = {
+        turtle:  {
+          name: "Michelangelo",
+          age: 35,
+          enjoys: "Pizza"
+        }
+      }
+    
+    post '/turtles', params: turtle_params
+    new_turtle = Turtle.first
+    expect(response).to have_http_status(200)
+    expect(new_turtle.name).to eq "Michelangelo"
+    expect(new_turtle.age).to eq 35
+    expect(new_turtle.enjoys).to eq "Pizza"
+    
+    end
+  end
+
 end
