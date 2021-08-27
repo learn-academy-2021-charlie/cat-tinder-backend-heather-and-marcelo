@@ -1,5 +1,5 @@
 class TurtlesController < ApplicationController
-    
+
     def index
         turtles = Turtle.all
         render json: turtles
@@ -7,7 +7,11 @@ class TurtlesController < ApplicationController
 
     def create
         turtle = Turtle.create(turtle_params)
-        render json: turtle
+        if turtle.valid?
+          render json: turtle
+        else
+          render json: turtle.errors, status: 422
+        end 
     end
 
     def update
